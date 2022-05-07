@@ -1,7 +1,6 @@
 package com.datechnologies.androidtest.login;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -19,7 +18,8 @@ import com.datechnologies.androidtest.R;
  *
  */
 public class LoginActivity extends AppCompatActivity {
-
+    private EditText emailInput;
+    private EditText passwordInput;
 
     //==============================================================================================
     // Static Class Methods
@@ -47,6 +47,9 @@ public class LoginActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
 
+        emailInput = findViewById(R.id.email_login);
+        passwordInput = findViewById(R.id.password);
+
 
         // TODO: Make the UI look like it does in the mock-up. Allow for horizontal screen rotation.
         // done
@@ -70,31 +73,26 @@ public class LoginActivity extends AppCompatActivity {
 
     public void LoginCheck(View v) {
 
-        EditText emailInput = findViewById(R.id.email_login);
-        EditText passwordInput = findViewById(R.id.password);
-
-        String emailText = emailInput.getText().toString();
-        String passwordText = passwordInput.getText().toString();
+        String emailText = emailInput.getText().toString().trim();
+        String passwordText = passwordInput.getText().toString().trim();
 
         if (emailText.equals("info@rapptrlabs.com") && passwordText.equals("Test123")) {
-            AlertDialog.Builder alert = new AlertDialog.Builder(this);
-            alert.setTitle("Login Confirmed!");
-            alert.setMessage("You are logged in");
-            alert.setPositiveButton("Continue?", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Toast.makeText(LoginActivity.this, "Lets go", Toast.LENGTH_SHORT).show();
-                }
-            });
-            alert.setNegativeButton("Go Back?", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Toast.makeText(LoginActivity.this, "No worries", Toast.LENGTH_SHORT).show();
-                }
-            });
+            ValidLogin();
+            Toast.makeText(LoginActivity.this, "Correct login!", Toast.LENGTH_SHORT).show();
         } else {
-            onBackPressed();
+            Toast.makeText(LoginActivity.this, "Try again!", Toast.LENGTH_SHORT).show();
         }
+
+    }
+
+    public void ValidLogin() {
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(LoginActivity.this);
+        alert.setTitle("Login Confirmed!");
+        alert.setMessage("You are logged in");
+        alert.setPositiveButton("Continue?", (dialog, which) -> Toast.makeText(LoginActivity.this, "Lets go", Toast.LENGTH_SHORT).show());
+        alert.setNegativeButton("Go Back?", (dialog, which) -> Toast.makeText(LoginActivity.this, "No worries", Toast.LENGTH_SHORT).show());
+
     }
 
     @Override
@@ -102,5 +100,7 @@ public class LoginActivity extends AppCompatActivity {
     {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+
     }
+
 }

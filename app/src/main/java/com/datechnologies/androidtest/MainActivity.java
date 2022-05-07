@@ -8,7 +8,6 @@ import com.datechnologies.androidtest.chat.ChatActivity;
 import com.datechnologies.androidtest.login.LoginActivity;
 
 
-
 /**
  * The main screen that lets you navigate to all other screens in the app.
  *
