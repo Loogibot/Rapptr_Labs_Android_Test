@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gpc_sunset"
+    tools:context=".login.LoginActivity">
+
+    <LinearLayout
+        android:id="@+id/login_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="#4DF9F9F9"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/email_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="8dp"
+            android:hint="@string/email_address"
+            android:minHeight="48dp"
+            android:autofillHints="emailAddress"
+            android:inputType="textEmailAddress" />
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/main_margin"
+            android:layout_marginRight="@dimen/main_margin"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="12dp"
+            android:hint="@string/password"
+            android:minHeight="48dp"
+            android:autofillHints="password"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/log_in"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="26dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/second_effect"
+            android:onClick="LoginCheck"
+            android:text="@string/login_button"
+            android:textColor="@color/background"
+            android:theme="@style/second_button_style"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
