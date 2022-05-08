@@ -1,15 +1,15 @@
 package com.datechnologies.androidtest;
 
-public class LoginData {
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.POST;
 
-    private String email;
-    private String password;
+public interface LoginData {
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    Call<ResponseBody> sendLoginData(
+            @Field("email") String email,
+            @Field("password") String password
+    );
 }
