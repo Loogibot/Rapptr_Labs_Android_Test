@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.datechnologies.androidtest.LoginData;
 import com.datechnologies.androidtest.MainActivity;
 import com.datechnologies.androidtest.R;
 
