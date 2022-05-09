@@ -89,34 +89,22 @@ public class LoginActivity extends AppCompatActivity {
         String passwordText = passwordInput.getText().toString().trim();
 
         if (emailText.equals("info@rapptrlabs.com") && passwordText.equals("Test123")) {
-            ValidLogin();
-            sendLoginData(emailText, passwordText);
+            ValidLogin(v);
+            // sendLoginData(emailText, passwordText);
         } else {
             Toast.makeText(this, "Try again!", Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void ValidLogin() {
+    public void ValidLogin(View v) {
         // Toast.makeText(this, "Correct login!", Toast.LENGTH_SHORT).show();
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setMessage("You are logged in");
-        alert.setTitle("Login Confirmed!");
-        alert.setPositiveButton("Continue?", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(LoginActivity.this, "Success", Toast.LENGTH_SHORT).show();
-            }
-        });
-        alert.setNegativeButton("Go Back?", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-               Toast.makeText(LoginActivity.this, "No worries", Toast.LENGTH_SHORT).show();
-            }
-        });
-
+        alert.setMessage("You are logged in")
+                .setTitle("Login Confirmed!")
+                .setPositiveButton("Continue?", (dialog, which) -> Toast.makeText(LoginActivity.this, "Success", Toast.LENGTH_SHORT).show())
+                .setNegativeButton("Go Back?", (dialog, which) -> Toast.makeText(LoginActivity.this, "No worries", Toast.LENGTH_SHORT).show());
         alert.create().show();
-
     }
 
     private void sendLoginData(String email, String password) {
