@@ -14,9 +14,11 @@ import com.datechnologies.androidtest.MainActivity;
 import com.datechnologies.androidtest.R;
 
 import java.io.IOException;
+
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
+
 import java.net.URL;
+
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -89,40 +91,39 @@ public class LoginActivity extends AppCompatActivity {
         String emailText = emailInput.getText().toString().trim();
         String passwordText = passwordInput.getText().toString().trim();
 
+
         if (emailText.equals("info@rapptrlabs.com") && passwordText.equals("Test123")) {
-            ValidLogin(v);
-
-            URL url = new URL("http://dev.rapptrlabs.com/Tests/scripts/login.php");
-            HttpURLConnection http = (HttpURLConnection)url.openConnection();
-            http.setRequestMethod("POST");
-            http.setDoOutput(true);
-            http.setRequestProperty("Authorization", "Basic aW5mb0ByYXBwdHJsYWJzLmNvbTpUZXN0MTIz");
-            http.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            http.setRequestProperty("Content-Length", "0");
-
-            System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
-            http.disconnect();
-
-            // sendLoginData(emailText, passwordText);
+            ValidLogin(v, emailText, passwordText);
         } else {
             Toast.makeText(this, "Try again!", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void ValidLogin(View v) {
+    private void ValidLogin(View v, String emailText, String passwordText) throws IOException {
+
+        URL url = new URL("https://dev.rapptrlabs.com/Tests/scripts/login.php");
+        HttpURLConnection http = (HttpURLConnection)url.openConnection();
+        http.setDoOutput(true);
+        http.setInstanceFollowRedirects(false);
+        http.setRequestMethod("GET");
+        http.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+        // sendLoginData(emailText, passwordText);
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setMessage("You are logged in")
-                .setTitle("Login Confirmed!")
-                .setPositiveButton("Continue?", (dialog, which) -> Toast.makeText(LoginActivity.this, "Success!", Toast.LENGTH_SHORT).show())
+        alert.setMessage("Code: " + http.getResponseCode())
+                .setTitle("Message: " + http.getResponseMessage())
+                .setPositiveButton("Ok?", (dialog, which) -> Toast.makeText(LoginActivity.this, "Success!", Toast.LENGTH_SHORT).show())
                 .setNegativeButton("Go Back?", (dialog, which) -> Toast.makeText(LoginActivity.this, "No worries", Toast.LENGTH_SHORT).show());
         alert.create().show();
+        http.disconnect();
+
     }
 
     private void sendLoginData(String email, String password) {
 
         final Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("http://dev.rapptrlabs.com/Tests/scripts/login.php")
+                .baseUrl("https://dev.rapptrlabs.com/Tests/scripts/login")
                 .addConverterFactory(GsonConverterFactory.create());
 
         final Retrofit retroFit = builder.build();
