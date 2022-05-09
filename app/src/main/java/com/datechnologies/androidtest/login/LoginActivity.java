@@ -3,7 +3,9 @@
 package com.datechnologies.androidtest.login;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -27,8 +29,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * A screen that displays a login prompt, allowing the user to login to the D & A Technologies Web Server.
  */
 public class LoginActivity extends AppCompatActivity {
-    public EditText emailInput;
-    public EditText passwordInput;
+    public EditText emailInput, passwordInput;
+
 
     //==============================================================================================
     // Static Class Methods
@@ -70,10 +72,6 @@ public class LoginActivity extends AppCompatActivity {
         String emailText = emailInput.getText().toString().trim();
         String passwordText = passwordInput.getText().toString().trim();
 
-        findViewById(R.id.log_in).setOnClickListener(View -> {
-            sendLoginData(emailText, passwordText);
-        });
-
         // TODO: When you receive a response from the login endpoint, display an AlertDialog.
         // TODO: The AlertDialog should display the 'code' and 'message' that was returned by the endpoint.
         // TODO: The AlertDialog should also display how long the API call took in milliseconds.
@@ -85,7 +83,6 @@ public class LoginActivity extends AppCompatActivity {
         // TODO: so please use those to test the login.
     }
 
-
     public void LoginCheck(View v) {
 
         String emailText = emailInput.getText().toString().trim();
@@ -93,22 +90,36 @@ public class LoginActivity extends AppCompatActivity {
 
         if (emailText.equals("info@rapptrlabs.com") && passwordText.equals("Test123")) {
             ValidLogin();
-            Toast.makeText(LoginActivity.this, "Correct login!", Toast.LENGTH_SHORT).show();
+            sendLoginData(emailText, passwordText);
         } else {
-            Toast.makeText(LoginActivity.this, "Try again!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Try again!", Toast.LENGTH_SHORT).show();
         }
     }
 
     public void ValidLogin() {
-        AlertDialog.Builder alert = new AlertDialog.Builder(LoginActivity.this);
-        alert.setTitle("Login Confirmed!");
+        // Toast.makeText(this, "Correct login!", Toast.LENGTH_SHORT).show();
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setMessage("You are logged in");
-        alert.setPositiveButton("Continue?", (dialog, which) -> Toast.makeText(LoginActivity.this, "Lets go", Toast.LENGTH_SHORT).show());
-        alert.setNegativeButton("Go Back?", (dialog, which) -> Toast.makeText(LoginActivity.this, "No worries", Toast.LENGTH_SHORT).show());
+        alert.setTitle("Login Confirmed!");
+        alert.setPositiveButton("Continue?", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(LoginActivity.this, "Success", Toast.LENGTH_SHORT).show();
+            }
+        });
+        alert.setNegativeButton("Go Back?", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+               Toast.makeText(LoginActivity.this, "No worries", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        alert.create().show();
 
     }
 
-    public void sendLoginData(String email, String password) {
+    private void sendLoginData(String email, String password) {
 
         final Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl("http://dev.rapptrlabs.com/Tests/scripts/login.php")
@@ -124,12 +135,12 @@ public class LoginActivity extends AppCompatActivity {
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 Toast.makeText(LoginActivity.this, "success", Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                 Toast.makeText(LoginActivity.this, "error", Toast.LENGTH_SHORT).show();
             }
         });
