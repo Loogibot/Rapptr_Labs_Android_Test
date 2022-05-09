@@ -1,9 +1,6 @@
-
-
 package com.datechnologies.androidtest.login;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
@@ -13,9 +10,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.datechnologies.androidtest.MainActivity;
 import com.datechnologies.androidtest.R;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -29,8 +30,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * A screen that displays a login prompt, allowing the user to login to the D & A Technologies Web Server.
  */
 public class LoginActivity extends AppCompatActivity {
-    public EditText emailInput, passwordInput;
 
+    public EditText emailInput, passwordInput;
 
     //==============================================================================================
     // Static Class Methods
@@ -83,26 +84,37 @@ public class LoginActivity extends AppCompatActivity {
         // TODO: so please use those to test the login.
     }
 
-    public void LoginCheck(View v) {
+    public void LoginCheck(View v) throws IOException {
 
         String emailText = emailInput.getText().toString().trim();
         String passwordText = passwordInput.getText().toString().trim();
 
         if (emailText.equals("info@rapptrlabs.com") && passwordText.equals("Test123")) {
             ValidLogin(v);
+
+            URL url = new URL("http://dev.rapptrlabs.com/Tests/scripts/login.php");
+            HttpURLConnection http = (HttpURLConnection)url.openConnection();
+            http.setRequestMethod("POST");
+            http.setDoOutput(true);
+            http.setRequestProperty("Authorization", "Basic aW5mb0ByYXBwdHJsYWJzLmNvbTpUZXN0MTIz");
+            http.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            http.setRequestProperty("Content-Length", "0");
+
+            System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
+            http.disconnect();
+
             // sendLoginData(emailText, passwordText);
         } else {
             Toast.makeText(this, "Try again!", Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void ValidLogin(View v) {
-        // Toast.makeText(this, "Correct login!", Toast.LENGTH_SHORT).show();
+    private void ValidLogin(View v) {
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setMessage("You are logged in")
                 .setTitle("Login Confirmed!")
-                .setPositiveButton("Continue?", (dialog, which) -> Toast.makeText(LoginActivity.this, "Success", Toast.LENGTH_SHORT).show())
+                .setPositiveButton("Continue?", (dialog, which) -> Toast.makeText(LoginActivity.this, "Success!", Toast.LENGTH_SHORT).show())
                 .setNegativeButton("Go Back?", (dialog, which) -> Toast.makeText(LoginActivity.this, "No worries", Toast.LENGTH_SHORT).show());
         alert.create().show();
     }
