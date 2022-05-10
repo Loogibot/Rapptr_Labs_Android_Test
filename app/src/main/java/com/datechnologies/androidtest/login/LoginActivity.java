@@ -14,11 +14,13 @@ import android.widget.Toast;
 import com.datechnologies.androidtest.MainActivity;
 import com.datechnologies.androidtest.R;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 
 import java.net.HttpURLConnection;
 
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 
 import okhttp3.ResponseBody;
@@ -101,17 +103,26 @@ public class LoginActivity extends AppCompatActivity {
 
     private void ValidLogin(View v, String emailText, String passwordText) throws IOException {
 
-        URL url = new URL("https://httpbin.org");
+        String urlParam = "email=" + emailText + "&" + "password" + passwordText;
+        byte[] postData = urlParam.getBytes( StandardCharsets.UTF_8 );
+        int postDataLength = postData.length;
+
+        URL url = new URL("http://dev.rapptrlabs.com/Tests/scripts/login.php");
         HttpURLConnection http = (HttpURLConnection) url.openConnection();
-        // http.setDoOutput(true);
-        http.setRequestMethod("GET");
+        http.setDoOutput(true);
+        http.setInstanceFollowRedirects( false );
+        http.setRequestMethod("POST");
         http.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-        http.setAllowUserInteraction(true);
+        http.setRequestProperty("charset", "utf-8");
+        http.setRequestProperty("Content-Length", Integer.toString( postDataLength ));
 
-        System.out.println( "Code: " + http.getResponseCode());
-        System.out.println( "Message: " + http.getResponseMessage());
+        // System.out.println( "Code: " + http.getResponseCode());
+        // System.out.println( "Message: " + http.getResponseMessage());
 
-        //  + http.getResponseMessage()
+        try(DataOutputStream wr = new DataOutputStream(http.getOutputStream())) {
+            wr.write( postData );
+            System.out.println(wr);
+        }
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setMessage("Code: " + http.getResponseCode())
@@ -119,7 +130,6 @@ public class LoginActivity extends AppCompatActivity {
                 .setPositiveButton("Ok?", (dialog, which) -> Toast.makeText(LoginActivity.this, "Success!", Toast.LENGTH_SHORT).show())
                 .setNegativeButton("Go Back?", (dialog, which) -> Toast.makeText(LoginActivity.this, "No worries", Toast.LENGTH_SHORT).show());
         alert.create().show();
-
     }
 
     private void sendLoginData(String email, String password) {
