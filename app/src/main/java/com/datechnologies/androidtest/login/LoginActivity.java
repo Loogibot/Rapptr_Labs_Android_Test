@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import com.datechnologies.androidtest.MainActivity;
 import com.datechnologies.androidtest.R;
 
@@ -91,7 +92,6 @@ public class LoginActivity extends AppCompatActivity {
         String emailText = emailInput.getText().toString().trim();
         String passwordText = passwordInput.getText().toString().trim();
 
-
         if (emailText.equals("info@rapptrlabs.com") && passwordText.equals("Test123")) {
             ValidLogin(v, emailText, passwordText);
         } else {
@@ -101,14 +101,14 @@ public class LoginActivity extends AppCompatActivity {
 
     private void ValidLogin(View v, String emailText, String passwordText) throws IOException {
 
-        URL url = new URL("https://dev.rapptrlabs.com/Tests/scripts/login.php");
-        HttpURLConnection http = (HttpURLConnection)url.openConnection();
+        URL url = new URL("https://www.thomas-bayer.com/sqlrest/");
+        HttpURLConnection http = (HttpURLConnection) url.openConnection();
         http.setDoOutput(true);
-        http.setInstanceFollowRedirects(false);
         http.setRequestMethod("GET");
-        http.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-
+        /// http.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
         // sendLoginData(emailText, passwordText);
+        //  + http.getResponseCode()
+        //  + http.getResponseMessage()
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setMessage("Code: " + http.getResponseCode())

@@ -14,8 +14,15 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            // Put this in your buildtypes release section
+            manifestPlaceholders = [usesCleartextTraffic:"false"]
+        }
+        debug {
+            // Put this in your buildtypes debug section:
+            manifestPlaceholders = [usesCleartextTraffic:"true"]
         }
     }
+    namespace 'com.datechnologies.androidtest'
 }
 
 dependencies {
