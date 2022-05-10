@@ -101,13 +101,16 @@ public class LoginActivity extends AppCompatActivity {
 
     private void ValidLogin(View v, String emailText, String passwordText) throws IOException {
 
-        URL url = new URL("https://www.thomas-bayer.com/sqlrest/");
+        URL url = new URL("https://httpbin.org");
         HttpURLConnection http = (HttpURLConnection) url.openConnection();
-        http.setDoOutput(true);
+        // http.setDoOutput(true);
         http.setRequestMethod("GET");
-        /// http.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-        // sendLoginData(emailText, passwordText);
-        //  + http.getResponseCode()
+        http.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+        http.setAllowUserInteraction(true);
+
+        System.out.println( "Code: " + http.getResponseCode());
+        System.out.println( "Message: " + http.getResponseMessage());
+
         //  + http.getResponseMessage()
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -116,7 +119,6 @@ public class LoginActivity extends AppCompatActivity {
                 .setPositiveButton("Ok?", (dialog, which) -> Toast.makeText(LoginActivity.this, "Success!", Toast.LENGTH_SHORT).show())
                 .setNegativeButton("Go Back?", (dialog, which) -> Toast.makeText(LoginActivity.this, "No worries", Toast.LENGTH_SHORT).show());
         alert.create().show();
-        http.disconnect();
 
     }
 
@@ -151,7 +153,5 @@ public class LoginActivity extends AppCompatActivity {
     public void onBackPressed() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
-
     }
-
 }
