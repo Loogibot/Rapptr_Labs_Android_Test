@@ -19,7 +19,8 @@
         android:layout_column="0"
         android:layout_marginRight="8dp"
         android:src="@drawable/ic_avatar_placeholder"
-        tools:ignore="RtlHardcoded" />
+        tools:ignore="RtlHardcoded"
+        android:contentDescription="avatar" />
 
     <TextView
         android:id="@+id/messengerName"

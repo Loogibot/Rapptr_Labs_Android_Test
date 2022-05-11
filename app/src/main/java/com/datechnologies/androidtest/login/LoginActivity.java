@@ -10,26 +10,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.datechnologies.androidtest.MainActivity;
 import com.datechnologies.androidtest.R;
-
-import java.io.DataOutputStream;
 import java.io.IOException;
-
-import java.net.HttpURLConnection;
-
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * A screen that displays a login prompt, allowing the user to login to the D & A Technologies Web Server.
@@ -68,17 +58,17 @@ public class LoginActivity extends AppCompatActivity {
         // TODO: Add a ripple effect when the buttons are clicked
         // done
         // TODO: Save screen state on screen rotation, inputted username and password should not disappear on screen rotation
+        // done
 
         // TODO: Send 'email' and 'password' to http://dev.rapptrlabs.com/Tests/scripts/login.php
         // TODO: as FormUrlEncoded parameters.
+        // DONE
 
         emailInput = findViewById(R.id.email_login);
         passwordInput = findViewById(R.id.password);
 
-        String emailText = emailInput.getText().toString().trim();
-        String passwordText = passwordInput.getText().toString().trim();
-
         // TODO: When you receive a response from the login endpoint, display an AlertDialog.
+        // done
         // TODO: The AlertDialog should display the 'code' and 'message' that was returned by the endpoint.
         // TODO: The AlertDialog should also display how long the API call took in milliseconds.
         // TODO: When a login is successful, tapping 'OK' on the AlertDialog should bring us back to the MainActivity
@@ -93,70 +83,58 @@ public class LoginActivity extends AppCompatActivity {
 
         String emailText = emailInput.getText().toString().trim();
         String passwordText = passwordInput.getText().toString().trim();
-
-        if (emailText.equals("info@rapptrlabs.com") && passwordText.equals("Test123")) {
-            ValidLogin(v, emailText, passwordText);
-        } else {
-            Toast.makeText(this, "Try again!", Toast.LENGTH_SHORT).show();
-        }
+        ValidLogin(v, emailText, passwordText);
     }
 
-    private void ValidLogin(View v, String emailText, String passwordText) throws IOException {
+    protected void ValidLogin(View v, String emailText, String passwordText) throws IOException {
 
-        String urlParam = "email=" + emailText + "&" + "password" + passwordText;
-        byte[] postData = urlParam.getBytes( StandardCharsets.UTF_8 );
-        int postDataLength = postData.length;
+        // using OkHttp
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
 
-        URL url = new URL("http://dev.rapptrlabs.com/Tests/scripts/login.php");
-        HttpURLConnection http = (HttpURLConnection) url.openConnection();
-        http.setDoOutput(true);
-        http.setInstanceFollowRedirects( false );
-        http.setRequestMethod("POST");
-        http.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-        http.setRequestProperty("charset", "utf-8");
-        http.setRequestProperty("Content-Length", Integer.toString( postDataLength ));
+        RequestBody body = RequestBody.create(mediaType, "email="+emailText+"&password="+passwordText);
 
-        // System.out.println( "Code: " + http.getResponseCode());
-        // System.out.println( "Message: " + http.getResponseMessage());
+        Request request = new Request.Builder()
+                .url("http://dev.rapptrlabs.com/Tests/scripts/login.php")
+                .method("POST", body)
+                .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                .build();
 
-        try(DataOutputStream wr = new DataOutputStream(http.getOutputStream())) {
-            wr.write( postData );
-            System.out.println(wr);
-        }
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    assert response.body() != null;
+                    String myResponse = response.body().string();
+
+                    LoginActivity.this.runOnUiThread(() -> {
+
+                        alertDialog(myResponse);
+                    });
+
+                }
+
+            }
+        });
+    }
+
+    private void alertDialog(String myResponse) {
+
+        // Toast.makeText(LoginActivity.this, myResponse, Toast.LENGTH_SHORT).show();
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setMessage("Code: " + http.getResponseCode())
-                .setTitle("Message: " + http.getResponseMessage())
+
+        alert.setMessage("Code: " + myResponse)
+                .setTitle("Message: " + myResponse)
                 .setPositiveButton("Ok?", (dialog, which) -> Toast.makeText(LoginActivity.this, "Success!", Toast.LENGTH_SHORT).show())
                 .setNegativeButton("Go Back?", (dialog, which) -> Toast.makeText(LoginActivity.this, "No worries", Toast.LENGTH_SHORT).show());
         alert.create().show();
-    }
-
-    private void sendLoginData(String email, String password) {
-
-        final Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("https://dev.rapptrlabs.com/Tests/scripts/login")
-                .addConverterFactory(GsonConverterFactory.create());
-
-        final Retrofit retroFit = builder.build();
-
-        LoginData loginData = retroFit.create(LoginData.class);
-
-        Call<ResponseBody> call = loginData.sendLoginData(
-                email, password
-        );
-
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                Toast.makeText(LoginActivity.this, "success", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                Toast.makeText(LoginActivity.this, "error", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     @Override

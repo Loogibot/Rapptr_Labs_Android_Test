@@ -38,7 +38,6 @@ public class ChatActivity extends AppCompatActivity {
     // Class Properties
     //==============================================================================================
 
-    private RecyclerView recyclerView;
     private ChatAdapter chatAdapter;
 
     Handler mainHandler = new Handler();
@@ -62,7 +61,7 @@ public class ChatActivity extends AppCompatActivity {
         setTitle(R.string.chat_title);
         setContentView(R.layout.activity_chat);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
         ActionBar actionBar = getSupportActionBar();
 
