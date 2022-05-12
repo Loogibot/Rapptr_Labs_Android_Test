@@ -2,27 +2,26 @@ package com.datechnologies.androidtest.chat;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 import com.datechnologies.androidtest.MainActivity;
 import com.datechnologies.androidtest.R;
 import com.datechnologies.androidtest.api.ChatLogMessageModel;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Screen that displays a list of chats from a chat log.
@@ -34,8 +33,6 @@ public class ChatActivity extends AppCompatActivity {
     //==============================================================================================
 
     private ChatAdapter chatAdapter;
-
-    Handler mainHandler = new Handler();
 
     //==============================================================================================
     // Static Class Methods
@@ -56,7 +53,7 @@ public class ChatActivity extends AppCompatActivity {
         setTitle(R.string.chat_title);
         setContentView(R.layout.activity_chat);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
 
         ActionBar actionBar = getSupportActionBar();
 
@@ -81,63 +78,78 @@ public class ChatActivity extends AppCompatActivity {
 
         // TODO: Retrieve the chat data from http://dev.rapptrlabs.com/Tests/scripts/chat_log.php
 
-        class fetchData extends Thread {
+        String URL = "http://dev.rapptrlabs.com/Tests/scripts/chat_log.php";
+        // using OkHttp
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
 
-            String data = "";
+        Request request = new Request.Builder()
+                .url(URL)
+                .method("GET", null)
+                .build();
 
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                e.printStackTrace();
+            }
 
             @Override
-            public void run() {
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                assert response.body() != null;
+                String myResponse = response.body().string();
 
-                mainHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        chatLogMessageModel.message = "This is test data. Please retrieve real data.";
-
-                        tempList.add(chatLogMessageModel);
-                        tempList.add(chatLogMessageModel);
-                        tempList.add(chatLogMessageModel);
-                        tempList.add(chatLogMessageModel);
-                        tempList.add(chatLogMessageModel);
-                        tempList.add(chatLogMessageModel);
-                        tempList.add(chatLogMessageModel);
-                        tempList.add(chatLogMessageModel);
-
-                        chatAdapter.setChatLogMessageModelList(tempList);
-
-                    }
-                });
-
+                JSONObject Jobject = new JSONObject();
                 try {
-                    URL url = new URL("http://dev.rapptrlabs.com/Tests/scripts/chat_log.php");
-                    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                    InputStream inputStream = httpURLConnection.getInputStream();
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                    String line;
-
-                    while ((line = bufferedReader.readLine()) != null) {
-                        data = data + line;
-                    }
-
-                    if (!data.isEmpty()) {
-
-                        JSONObject jsonObject = new JSONObject(data);
-                        JSONArray data = jsonObject.getJSONArray("data");
-                        tempList.clear();
-                        for (int i = 0;i < data.length(); i++){
-
-                            JSONObject names = data.getJSONObject(i);
-                            String name = names.getString("name");
-
-                        }
-                    }
-
-                } catch (IOException | JSONException e) {
-                    e.printStackTrace();
+                    Jobject = new JSONObject(myResponse);
+                } catch (JSONException ignored) {
                 }
+
+                String userName = "";
+                try {
+                    userName = Jobject.getString("data");
+                } catch (JSONException ignored) {
+                }
+
+                String userMessage = "";
+                try {
+                    userMessage = Jobject.getString("data");
+                } catch (JSONException ignored) {
+                }
+
+                String userAvatar = "";
+                try {
+                    userAvatar = Jobject.getJSONArray("avatar_url").toString();
+                } catch (JSONException ignored) {
+                }
+
+                String finalChatData = Jobject.toString();
+                String finalUserName = userName;
+                String finalUserMessage = userMessage;
+                String finalUserAvatar = userAvatar;
+
+                runOnUiThread(() -> {
+
+                    Toast.makeText(ChatActivity.this, finalChatData, Toast.LENGTH_SHORT).show();
+
+                    chatLogMessageModel.message = finalUserMessage;
+                    chatLogMessageModel.username = finalUserName;
+                    chatLogMessageModel.avatarUrl = finalUserAvatar;
+
+                    tempList.add(chatLogMessageModel);
+                    tempList.add(chatLogMessageModel);
+                    tempList.add(chatLogMessageModel);
+                    tempList.add(chatLogMessageModel);
+                    tempList.add(chatLogMessageModel);
+                    tempList.add(chatLogMessageModel);
+                    tempList.add(chatLogMessageModel);
+                    tempList.add(chatLogMessageModel);
+
+                    chatAdapter.setChatLogMessageModelList(tempList);
+
+                });
             }
-        }
+        });
 
         // TODO: Parse this chat data from JSON into ChatLogMessageModel and display it.
     }

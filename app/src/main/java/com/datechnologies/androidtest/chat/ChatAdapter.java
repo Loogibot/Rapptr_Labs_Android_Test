@@ -1,5 +1,6 @@
 package com.datechnologies.androidtest.chat;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +47,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     // RecyclerView.Adapter Methods
     //==============================================================================================
 
+    @NonNull
     @Override
     public ChatViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
@@ -78,12 +80,14 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     {
         ImageView avatarImageView;
         TextView messageTextView;
+        TextView messengerName;
 
         public ChatViewHolder(View view)
         {
             super(view);
-            avatarImageView = (ImageView)view.findViewById(R.id.avatarImageView);
-            messageTextView = (TextView)view.findViewById(R.id.messageTextView);
+            avatarImageView = view.findViewById(R.id.avatarImageView);
+            messageTextView = view.findViewById(R.id.messageTextView);
+            messengerName = view.findViewById(R.id.messengerName);
         }
     }
 
