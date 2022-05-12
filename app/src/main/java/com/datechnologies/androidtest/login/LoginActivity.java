@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 import com.datechnologies.androidtest.MainActivity;
 import com.datechnologies.androidtest.R;
+import org.json.JSONException;
+import org.json.JSONObject;
 import java.io.IOException;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -24,6 +26,7 @@ import okhttp3.Response;
 /**
  * A screen that displays a login prompt, allowing the user to login to the D & A Technologies Web Server.
  */
+
 public class LoginActivity extends AppCompatActivity {
 
     public EditText emailInput, passwordInput;
@@ -70,6 +73,7 @@ public class LoginActivity extends AppCompatActivity {
         // TODO: When you receive a response from the login endpoint, display an AlertDialog.
         // done
         // TODO: The AlertDialog should display the 'code' and 'message' that was returned by the endpoint.
+        // done
         // TODO: The AlertDialog should also display how long the API call took in milliseconds.
         // TODO: When a login is successful, tapping 'OK' on the AlertDialog should bring us back to the MainActivity
 
@@ -79,15 +83,16 @@ public class LoginActivity extends AppCompatActivity {
         // TODO: so please use those to test the login.
     }
 
-    public void LoginCheck(View v) throws IOException {
+    public void LoginCheck(View v) {
 
         String emailText = emailInput.getText().toString().trim();
         String passwordText = passwordInput.getText().toString().trim();
-        ValidLogin(v, emailText, passwordText);
+        ValidateLogin(v, emailText, passwordText);
     }
 
-    protected void ValidLogin(View v, String emailText, String passwordText) throws IOException {
+    protected void ValidateLogin(View v, String emailText, String passwordText) {
 
+        String URL = "http://dev.rapptrlabs.com/Tests/scripts/login.php";
         // using OkHttp
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
@@ -96,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
         RequestBody body = RequestBody.create(mediaType, "email="+emailText+"&password="+passwordText);
 
         Request request = new Request.Builder()
-                .url("http://dev.rapptrlabs.com/Tests/scripts/login.php")
+                .url(URL)
                 .method("POST", body)
                 .addHeader("Content-Type", "application/x-www-form-urlencoded")
                 .build();
@@ -109,37 +114,53 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    assert response.body() != null;
-                    String myResponse = response.body().string();
+                assert response.body() != null;
+                String myResponse = response.body().string();
 
-                    LoginActivity.this.runOnUiThread(() -> {
+                JSONObject Jobject = new JSONObject();
 
-                        alertDialog(myResponse);
-                    });
-
+                try {
+                    Jobject = new JSONObject(myResponse);
+                } catch (JSONException ignored) {
                 }
+
+                String alertCode = "";
+                try {
+                    alertCode = Jobject.getString("code");
+                } catch (JSONException ignored) {
+                }
+
+                String alertMessage = "";
+                try {
+                    alertMessage = Jobject.getString("message");
+                } catch (JSONException ignored) {
+                }
+
+                String finalAlertCode = alertCode;
+                String finalAlertMessage = alertMessage;
+
+                LoginActivity.this.runOnUiThread(() -> {
+
+                    alertDialog(finalAlertCode, finalAlertMessage);
+                });
 
             }
         });
     }
 
-    private void alertDialog(String myResponse) {
-
-        // Toast.makeText(LoginActivity.this, myResponse, Toast.LENGTH_SHORT).show();
+    private void alertDialog(String alertCode, String alertMessage) {
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-        alert.setMessage("Code: " + myResponse)
-                .setTitle("Message: " + myResponse)
-                .setPositiveButton("Ok?", (dialog, which) -> Toast.makeText(LoginActivity.this, "Success!", Toast.LENGTH_SHORT).show())
-                .setNegativeButton("Go Back?", (dialog, which) -> Toast.makeText(LoginActivity.this, "No worries", Toast.LENGTH_SHORT).show());
+        alert.setTitle("Code: " + alertCode)
+                .setMessage("Message: " + alertMessage)
+                .setPositiveButton("Ok?", (dialog, which) -> onBackPressed());
         alert.create().show();
     }
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
     }
 }
