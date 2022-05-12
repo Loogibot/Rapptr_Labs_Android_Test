@@ -9,14 +9,19 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
+
 import com.datechnologies.androidtest.MainActivity;
 import com.datechnologies.androidtest.R;
 import com.datechnologies.androidtest.api.ChatLogMessageModel;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -38,8 +43,7 @@ public class ChatActivity extends AppCompatActivity {
     // Static Class Methods
     //==============================================================================================
 
-    public static void start(Context context)
-    {
+    public static void start(Context context) {
         Intent starter = new Intent(context, ChatActivity.class);
         context.startActivity(starter);
     }
@@ -85,7 +89,7 @@ public class ChatActivity extends AppCompatActivity {
 
         Request request = new Request.Builder()
                 .url(URL)
-                .method("GET", null)
+                .get() // or use .method("GET", null) or .method("POST", body)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
@@ -99,55 +103,62 @@ public class ChatActivity extends AppCompatActivity {
                 assert response.body() != null;
                 String myResponse = response.body().string();
 
-                JSONObject Jobject = new JSONObject();
+                JSONObject jObject = new JSONObject();
                 try {
-                    Jobject = new JSONObject(myResponse);
+                    jObject = new JSONObject(myResponse);
                 } catch (JSONException ignored) {
                 }
 
-                String userName = "";
+                JSONArray jArray = new JSONArray();
                 try {
-                    userName = Jobject.getString("data");
+                    jArray = jObject.getJSONArray("data");
                 } catch (JSONException ignored) {
                 }
 
-                String userMessage = "";
-                try {
-                    userMessage = Jobject.getString("data");
-                } catch (JSONException ignored) {
+                int n = jArray.length();
+
+                for (int i = 0; i < n; ++i) {
+
+                    JSONObject jData = new JSONObject();
+                    try {
+                        jData = jArray.getJSONObject(i);
+                    } catch (JSONException ignored) {}
+
+                    String userName = "";
+                    try {
+                        userName = jData.getString("name");
+                    } catch (JSONException ignored) {}
+
+                    String userMessage = "";
+                    try {
+                        userMessage = jData.getString("message");
+                    } catch (JSONException ignored) {}
+
+
+                    String userAvatar = "";
+                    try {
+                        userAvatar = jData.getString("avatar_url");
+                    } catch (JSONException ignored) {}
+
+                    String finalChatData = jData.toString();
+                    String finalUserName = userName;
+                    String finalUserMessage = userMessage;
+                    String finalUserAvatar = userAvatar;
+
+                    runOnUiThread( () -> {
+
+                        Toast.makeText(ChatActivity.this, finalChatData, Toast.LENGTH_SHORT).show();
+
+                        chatLogMessageModel.message = finalUserMessage;
+                        chatLogMessageModel.username = finalUserName;
+                        chatLogMessageModel.avatarUrl = finalUserAvatar;
+
+                        tempList.add(chatLogMessageModel);
+
+                        chatAdapter.setChatLogMessageModelList(tempList);
+
+                    });
                 }
-
-                String userAvatar = "";
-                try {
-                    userAvatar = Jobject.getJSONArray("avatar_url").toString();
-                } catch (JSONException ignored) {
-                }
-
-                String finalChatData = Jobject.toString();
-                String finalUserName = userName;
-                String finalUserMessage = userMessage;
-                String finalUserAvatar = userAvatar;
-
-                runOnUiThread(() -> {
-
-                    Toast.makeText(ChatActivity.this, finalChatData, Toast.LENGTH_SHORT).show();
-
-                    chatLogMessageModel.message = finalUserMessage;
-                    chatLogMessageModel.username = finalUserName;
-                    chatLogMessageModel.avatarUrl = finalUserAvatar;
-
-                    tempList.add(chatLogMessageModel);
-                    tempList.add(chatLogMessageModel);
-                    tempList.add(chatLogMessageModel);
-                    tempList.add(chatLogMessageModel);
-                    tempList.add(chatLogMessageModel);
-                    tempList.add(chatLogMessageModel);
-                    tempList.add(chatLogMessageModel);
-                    tempList.add(chatLogMessageModel);
-
-                    chatAdapter.setChatLogMessageModelList(tempList);
-
-                });
             }
         });
 
@@ -155,8 +166,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
