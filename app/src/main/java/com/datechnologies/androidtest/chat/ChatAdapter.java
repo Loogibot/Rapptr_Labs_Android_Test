@@ -6,11 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-
 import com.datechnologies.androidtest.R;
 import com.datechnologies.androidtest.api.ChatLogMessageModel;
-
 import java.util.ArrayList;
 import java.util.List;
 

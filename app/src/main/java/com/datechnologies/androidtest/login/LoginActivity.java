@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 import com.datechnologies.androidtest.MainActivity;
 import com.datechnologies.androidtest.R;
 import org.json.JSONException;
@@ -117,6 +116,10 @@ public class LoginActivity extends AppCompatActivity {
                 assert response.body() != null;
                 String myResponse = response.body().string();
 
+                long tx = response.sentRequestAtMillis();
+                long rx = response.receivedResponseAtMillis();
+                String responseTime = "Response Time : " + (rx - tx) + " ms";
+
                 JSONObject Jobject = new JSONObject();
 
                 try {
@@ -141,19 +144,19 @@ public class LoginActivity extends AppCompatActivity {
 
                 LoginActivity.this.runOnUiThread(() -> {
 
-                    alertDialog(finalAlertCode, finalAlertMessage);
+                    alertDialog(finalAlertCode, finalAlertMessage, responseTime);
                 });
 
             }
         });
     }
 
-    private void alertDialog(String alertCode, String alertMessage) {
+    private void alertDialog(String alertCode, String alertMessage, String responseTime) {
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
         alert.setTitle("Code: " + alertCode)
-                .setMessage("Message: " + alertMessage)
+                .setMessage("Message: " + alertMessage + "\n" + responseTime)
                 .setPositiveButton("Ok?", (dialog, which) -> onBackPressed());
         alert.create().show();
     }
