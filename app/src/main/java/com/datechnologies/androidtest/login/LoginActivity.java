@@ -120,33 +120,20 @@ public class LoginActivity extends AppCompatActivity {
                 long rx = response.receivedResponseAtMillis();
                 String responseTime = "Response Time : " + (rx - tx) + " ms";
 
-                JSONObject Jobject = new JSONObject();
+                JSONObject Jobject;
+                String alertCode = "";
+                String alertMessage = "";
 
                 try {
                     Jobject = new JSONObject(myResponse);
-                } catch (JSONException ignored) {
-                }
-
-                String alertCode = "";
-                try {
                     alertCode = Jobject.getString("code");
-                } catch (JSONException ignored) {
-                }
-
-                String alertMessage = "";
-                try {
                     alertMessage = Jobject.getString("message");
-                } catch (JSONException ignored) {
-                }
+                } catch (JSONException ignored) {}
 
                 String finalAlertCode = alertCode;
                 String finalAlertMessage = alertMessage;
 
-                LoginActivity.this.runOnUiThread(() -> {
-
-                    alertDialog(finalAlertCode, finalAlertMessage, responseTime);
-                });
-
+                LoginActivity.this.runOnUiThread(() -> alertDialog(finalAlertCode, finalAlertMessage, responseTime));
             }
         });
     }
