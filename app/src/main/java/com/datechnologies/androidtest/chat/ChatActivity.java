@@ -134,6 +134,7 @@ public class ChatActivity extends AppCompatActivity {
                 chatLogMessageModel.userId = userId;
 
                 for (i = 0; i < n; i++) {
+
                     tempList.add(chatLogMessageModel);
                     runOnUiThread(() -> chatAdapter.setChatLogMessageModelList(tempList));
                 }
