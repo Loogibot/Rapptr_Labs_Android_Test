@@ -72,11 +72,11 @@ public class ChatActivity extends AppCompatActivity {
         recyclerView.setAdapter(chatAdapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(
-                getApplicationContext(),1));
+                getApplicationContext(), 1));
 
         List<ChatLogMessageModel> tempList = new ArrayList<>();
 
-        ChatLogMessageModel chatLogMessageModel = new ChatLogMessageModel();
+
 
         // TODO: Make the UI look like it does in the mock-up. Allow for horizontal screen rotation.
         // done
@@ -84,10 +84,11 @@ public class ChatActivity extends AppCompatActivity {
         // TODO: Retrieve the chat data from http://dev.rapptrlabs.com/Tests/scripts/chat_log.php
         // done
         // TODO: Parse this chat data from JSON into ChatLogMessageModel and display it.
-        viewChatData(tempList, chatLogMessageModel);
+        viewChatData(tempList);
+
     }
 
-    public void viewChatData(List<ChatLogMessageModel> tempList, ChatLogMessageModel chatLogMessageModel) {
+    public void viewChatData(List<ChatLogMessageModel> tempList) {
         String URL = "http://dev.rapptrlabs.com/Tests/scripts/chat_log.php";
         // using OkHttp
         OkHttpClient client = new OkHttpClient().newBuilder()
@@ -116,25 +117,20 @@ public class ChatActivity extends AppCompatActivity {
                     jArray = jObject.getJSONArray("data");
                 } catch (JSONException ignored) {
                 }
-
                 int n = jArray.length();
-                int i = 0;
 
-                try {
-                    jData = jArray.getJSONObject(i);
-                    chatLogMessageModel.userId = jData.getInt("user_id");
+                for (int i = 0; i < n; i++) {
+                    jData = jArray.optJSONObject(i);
+                    //create a new chat from the model for each iteration and adds it to tempList
+                    ChatLogMessageModel chatLogMessageModel = new ChatLogMessageModel();
+                    chatLogMessageModel.userId = jData.optInt("user_id");
                     chatLogMessageModel.username = jData.optString("name");
                     chatLogMessageModel.message = jData.optString("message");
                     chatLogMessageModel.avatarUrl = jData.optString("avatar_url");
-
-                } catch (JSONException ignored) {
-                }
-
-                while (i < n) {
                     tempList.add(chatLogMessageModel);
-                    runOnUiThread(() -> chatAdapter.setChatLogMessageModelList(tempList));
-                     ++i;
                 }
+                // renders chat with tempList using chatadapter
+                runOnUiThread(() -> chatAdapter.setChatLogMessageModelList(tempList));
             }
         });
     }

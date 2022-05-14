@@ -12,6 +12,7 @@
     <string name="fade_in_button">FADE IN</string>
     <string name="email_address">Email</string>
     <string name="password">Password</string>
+    <string name="avatar_img">avatar_img</string>
     <string name="filler_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse pharetra, sapien at luctus semper, justo dui accumsan lorem, nec pretium dui eros pharetra leo.</string>
     <string name="chat_messenger">Name</string>
 
