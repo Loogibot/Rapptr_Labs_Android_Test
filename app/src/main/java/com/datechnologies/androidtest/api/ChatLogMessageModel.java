@@ -23,5 +23,7 @@ public class ChatLogMessageModel
         return username;
     }
 
-    public String getMessage() { return message; }
+    public String getMessage() {
+        return message;
+    }
 }

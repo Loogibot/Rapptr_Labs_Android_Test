@@ -1,25 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?android:selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
-    android:padding="@dimen/small_margin"
     android:orientation="horizontal"
-    tools:background="@color/background"
-    android:id="@+id/gridLayout">
+    tools:background="@color/background" >
 
     <ImageView
         android:id="@+id/avatarImageView"
-        style="@style/avatar_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginEnd="7dp"
-        android:background="@drawable/avatar_effect"
+        android:layout_row="1"
+        android:layout_column="0"
+        android:layout_marginRight="8dp"
         android:contentDescription="@string/avatar_img"
         android:src="@drawable/ic_avatar_placeholder"
         tools:ignore="RtlHardcoded" />
@@ -28,25 +24,20 @@
         android:id="@+id/messengerName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/avatarImageView"
-        android:layout_marginStart="@dimen/small_margin"
-        android:layout_marginEnd="@dimen/small_margin"
-        android:layout_toEndOf="@+id/avatarImageView"
+        android:layout_row="0"
+        android:layout_column="1"
         android:text="@string/chat_messenger" />
 
     <TextView
         android:id="@+id/messageTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="667dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/messengerName"
-        android:layout_alignStart="@+id/messengerName"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="@dimen/small_margin"
+        android:layout_row="1"
+        android:layout_column="1"
         android:background="@drawable/chat_message_effect"
         android:padding="8dp"
         android:textColor="@color/chat_text"
         android:theme="@style/chat_message_style"
         tools:text="@string/filler_text" />
 
-</RelativeLayout>
+</GridLayout>
