@@ -68,7 +68,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
 
         viewHolder.messageTextView.setText(chatLogMessageModel.message);
         viewHolder.messengerName.setText(chatLogMessageModel.username);
-        viewHolder.avatarImageView.setImageURI(Uri.fromFile(new File(chatLogMessageModel.avatarUrl)));
         Picasso.get().load(chatLogMessageModel.avatarUrl).into(viewHolder.avatarImageView);
     }
 
