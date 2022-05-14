@@ -121,6 +121,7 @@ public class ChatActivity extends AppCompatActivity {
 
                 for (int i = 0; i < n; i++) {
                     jData = jArray.optJSONObject(i);
+                    //create a new chat from the model for each iteration and adds it to tempList
                     ChatLogMessageModel chatLogMessageModel = new ChatLogMessageModel();
                     chatLogMessageModel.userId = jData.optInt("user_id");
                     chatLogMessageModel.username = jData.optString("name");
@@ -128,6 +129,7 @@ public class ChatActivity extends AppCompatActivity {
                     chatLogMessageModel.avatarUrl = jData.optString("avatar_url");
                     tempList.add(chatLogMessageModel);
                 }
+                // renders chat with tempList using chatadapter
                 runOnUiThread(() -> chatAdapter.setChatLogMessageModelList(tempList));
             }
         });
