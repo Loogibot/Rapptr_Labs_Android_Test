@@ -7,23 +7,16 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.Toast;
-
 import com.datechnologies.androidtest.MainActivity;
 import com.datechnologies.androidtest.R;
 import com.datechnologies.androidtest.api.ChatLogMessageModel;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -129,7 +122,7 @@ public class ChatActivity extends AppCompatActivity {
                     chatLogMessageModel.avatarUrl = jData.optString("avatar_url");
                     tempList.add(chatLogMessageModel);
                 }
-                // renders chat with tempList using chatadapter
+                // renders chat with tempList using chatAdapter
                 runOnUiThread(() -> chatAdapter.setChatLogMessageModelList(tempList));
             }
         });

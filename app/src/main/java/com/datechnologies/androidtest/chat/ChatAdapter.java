@@ -1,6 +1,5 @@
 package com.datechnologies.androidtest.chat;
 
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,16 +10,13 @@ import android.widget.TextView;
 import com.datechnologies.androidtest.R;
 import com.datechnologies.androidtest.api.ChatLogMessageModel;
 import com.squareup.picasso.Picasso;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A recycler view adapter used to display chat log messages in {@link ChatActivity}.
-
  */
-public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder>
-{
+public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
     //==============================================================================================
     // Class Properties
     //==============================================================================================
@@ -31,8 +27,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     // Constructor
     //==============================================================================================
 
-    public ChatAdapter()
-    {
+    public ChatAdapter() {
         chatLogMessageModelList = new ArrayList<>();
     }
 
@@ -40,8 +35,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     // Class Instance Methods
     //==============================================================================================
 
-    public void setChatLogMessageModelList(List<ChatLogMessageModel> chatLogMessageModelList)
-    {
+    public void setChatLogMessageModelList(List<ChatLogMessageModel> chatLogMessageModelList) {
         this.chatLogMessageModelList = chatLogMessageModelList;
         notifyDataSetChanged();
     }
@@ -52,8 +46,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
 
     @NonNull
     @Override
-    public ChatViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
-    {
+    public ChatViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.
                 from(parent.getContext()).
                 inflate(R.layout.item_chat, parent, false);
@@ -62,18 +55,18 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     }
 
     @Override
-    public void onBindViewHolder(ChatViewHolder viewHolder, int position)
-    {
+    public void onBindViewHolder(ChatViewHolder viewHolder, int position) {
         ChatLogMessageModel chatLogMessageModel = chatLogMessageModelList.get(position);
 
         viewHolder.messageTextView.setText(chatLogMessageModel.message);
         viewHolder.messengerName.setText(chatLogMessageModel.username);
-        Picasso.get().load(chatLogMessageModel.avatarUrl).into(viewHolder.avatarImageView);
+
+        Picasso.get().load(chatLogMessageModel.avatarUrl)
+                .into(viewHolder.avatarImageView);
     }
 
     @Override
-    public int getItemCount()
-    {
+    public int getItemCount() {
         return chatLogMessageModelList.size();
     }
 
@@ -81,14 +74,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     // ChatViewHolder Class
     //==============================================================================================
 
-    public static class ChatViewHolder extends RecyclerView.ViewHolder
-    {
+    public static class ChatViewHolder extends RecyclerView.ViewHolder {
         ImageView avatarImageView;
         TextView messageTextView;
         TextView messengerName;
 
-        public ChatViewHolder(View view)
-        {
+        public ChatViewHolder(View view) {
             super(view);
             avatarImageView = view.findViewById(R.id.avatarImageView);
             messageTextView = view.findViewById(R.id.messageTextView);
