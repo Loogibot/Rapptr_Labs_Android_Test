@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -20,6 +21,9 @@ import com.datechnologies.androidtest.R;
  */
 
 public class AnimationActivity extends AppCompatActivity {
+
+    ImageView d_a_techImage;
+    float x, y, dx, dy;
 
     //==============================================================================================
     // Class Properties
@@ -56,7 +60,7 @@ public class AnimationActivity extends AppCompatActivity {
         // done
         // TODO: When the fade button is clicked, you must animate the D & A Technologies logo.
 
-        ImageView d_a_techImage = findViewById(R.id.d_and_a_technologies);
+        d_a_techImage = findViewById(R.id.d_and_a_technologies);
         Button fadeButton = findViewById(R.id.fade_in);
 
         fadeButton.setOnClickListener(v -> {
@@ -71,8 +75,30 @@ public class AnimationActivity extends AppCompatActivity {
         // done
 
         // TODO: The user should be able to touch and drag the D & A Technologies logo around the screen.
+        // done
 
         // TODO: Add a bonus to make yourself stick out. Music, color, fireworks, explosions!!!
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            x = event.getX();
+            y = event.getY();
+        }
+
+        if (event.getAction() == MotionEvent.ACTION_MOVE) {
+            dx = event.getX() - x;
+            dy = event.getY() - y;
+
+            d_a_techImage.setX(d_a_techImage.getX() + dx);
+            d_a_techImage.setY(d_a_techImage.getY() + dy);
+
+            x = event.getX();
+            y = event.getY();
+        }
+        return super.onTouchEvent(event);
     }
 
     @Override
