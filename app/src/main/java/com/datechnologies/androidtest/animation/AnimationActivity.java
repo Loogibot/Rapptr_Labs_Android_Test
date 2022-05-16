@@ -24,7 +24,6 @@ public class AnimationActivity extends AppCompatActivity {
 
     ImageView d_a_techImage;
     float x, y, dx, dy;
-
     //==============================================================================================
     // Class Properties
     //==============================================================================================
