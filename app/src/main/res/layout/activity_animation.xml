@@ -22,6 +22,7 @@
 
     <Button
         android:id="@+id/fade_in"
+        style="@style/second_button_style"
         android:layout_width="match_parent"
         android:layout_height="@dimen/button_height"
         android:layout_alignParentBottom="true"
@@ -30,7 +31,6 @@
         android:layout_marginBottom="@dimen/main_margin"
         android:background="@drawable/second_effect"
         android:text="@string/fade_in_button"
-        android:textColor="@color/background"
-        style="@style/second_button_style"/>
+        android:textColor="@color/background" />
 
 </RelativeLayout>
