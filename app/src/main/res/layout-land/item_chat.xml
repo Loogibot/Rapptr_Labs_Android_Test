@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?android:selectableItemBackground"
+    android:background="?attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
     android:orientation="horizontal"
@@ -17,7 +18,7 @@
         android:layout_column="0"
         android:layout_marginRight="8dp"
         android:contentDescription="@string/avatar_img"
-        android:src="@drawable/ic_avatar_placeholder"
+        app:srcCompat="@drawable/ic_avatar_placeholder"
         tools:ignore="RtlHardcoded" />
 
     <TextView

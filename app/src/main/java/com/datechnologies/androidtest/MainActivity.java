@@ -1,12 +1,12 @@
 package com.datechnologies.androidtest;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
 import com.datechnologies.androidtest.animation.AnimationActivity;
 import com.datechnologies.androidtest.chat.ChatActivity;
 import com.datechnologies.androidtest.login.LoginActivity;
-
 
 /**
  * The main screen that lets you navigate to all other screens in the app.
@@ -52,16 +52,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void onChatClicked(View v)
     {
-        ChatActivity.start(this);
+        ChatActivity.start(MainActivity.this);
     }
 
     public void onLoginClicked(View v)
     {
-        LoginActivity.start(this);
+        LoginActivity.start(MainActivity.this);
     }
 
-    public void onAnimationClicked(View v)
-    {
-        AnimationActivity.start(this);
-    }
+    public void onAnimationClicked(View v) { AnimationActivity.start(MainActivity.this); }
 }

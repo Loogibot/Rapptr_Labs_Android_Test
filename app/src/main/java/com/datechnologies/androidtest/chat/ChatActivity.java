@@ -2,12 +2,12 @@ package com.datechnologies.androidtest.chat;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.datechnologies.androidtest.MainActivity;
 import com.datechnologies.androidtest.R;
 import com.datechnologies.androidtest.api.ChatLogMessageModel;
@@ -64,12 +64,9 @@ public class ChatActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(chatAdapter);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(
-                getApplicationContext(), 1));
+        recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 1));
 
         List<ChatLogMessageModel> tempList = new ArrayList<>();
-
-
 
         // TODO: Make the UI look like it does in the mock-up. Allow for horizontal screen rotation.
         // done
@@ -77,6 +74,7 @@ public class ChatActivity extends AppCompatActivity {
         // TODO: Retrieve the chat data from http://dev.rapptrlabs.com/Tests/scripts/chat_log.php
         // done
         // TODO: Parse this chat data from JSON into ChatLogMessageModel and display it.
+        // done
         viewChatData(tempList);
 
     }

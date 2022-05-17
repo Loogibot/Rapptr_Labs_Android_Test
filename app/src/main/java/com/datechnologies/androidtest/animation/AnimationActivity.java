@@ -1,17 +1,14 @@
 package com.datechnologies.androidtest.animation;
 
-import android.content.Context;
-import android.content.Intent;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import android.content.*;
 import android.os.Bundle;
-import android.view.MotionEvent;
-import android.view.View;
+import android.view.*;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageView;
-
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import com.datechnologies.androidtest.MainActivity;
 import com.datechnologies.androidtest.R;
 

@@ -7,7 +7,6 @@
     tools:context=".login.LoginActivity">
 
     <LinearLayout
-        android:id="@+id/login_box"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -19,29 +18,30 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
             android:layout_marginTop="24dp"
+            android:layout_marginRight="30dp"
             android:layout_marginBottom="8dp"
-            android:hint="@string/email_address"
-            android:minHeight="48dp"
             android:autofillHints="emailAddress"
-            android:inputType="textEmailAddress" />
+            android:hint="@string/email_address"
+            android:inputType="textEmailAddress"
+            android:minHeight="48dp"
+            android:textColorHint="#37474F" />
 
         <EditText
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/main_margin"
-            android:layout_marginRight="@dimen/main_margin"
             android:layout_marginTop="8dp"
+            android:layout_marginRight="@dimen/main_margin"
             android:layout_marginBottom="12dp"
-            android:hint="@string/password"
-            android:minHeight="48dp"
             android:autofillHints="password"
-            android:inputType="textPassword" />
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:minHeight="48dp"
+            android:textColorHint="#37474F" />
 
         <Button
-            android:id="@+id/log_in"
             android:layout_width="match_parent"
             android:layout_height="@dimen/button_height"
             android:layout_marginStart="25dp"
@@ -51,7 +51,8 @@
             android:onClick="LoginCheck"
             android:text="@string/login_button"
             android:textColor="@color/background"
-            android:theme="@style/second_button_style"/>
+            android:theme="@style/second_button_style"
+            tools:ignore="UsingOnClickInXml" />
 
     </LinearLayout>
 
