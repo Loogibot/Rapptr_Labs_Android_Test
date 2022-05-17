@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,7 +18,7 @@
         android:layout_marginStart="23dp"
         android:layout_marginTop="100dp"
         android:layout_marginEnd="22dp"
-        android:src="@drawable/gpc_logo"
+        app:srcCompat="@drawable/gpc_logo"
         android:contentDescription="d_and_a_technologies"/>
 
     <Button

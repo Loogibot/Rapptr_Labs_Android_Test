@@ -1,26 +1,21 @@
 package com.datechnologies.androidtest.login;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import com.datechnologies.androidtest.MainActivity;
 import com.datechnologies.androidtest.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.IOException;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+import okhttp3.*;
 
 /**
  * A screen that displays a login prompt, allowing the user to login to the D & A Technologies Web Server.
@@ -74,22 +69,25 @@ public class LoginActivity extends AppCompatActivity {
         // TODO: The AlertDialog should display the 'code' and 'message' that was returned by the endpoint.
         // done
         // TODO: The AlertDialog should also display how long the API call took in milliseconds.
+        // done
         // TODO: When a login is successful, tapping 'OK' on the AlertDialog should bring us back to the MainActivity
+        // done
 
         // TODO: The only valid login credentials are:
         // TODO: email: info@rapptrlabs.com
         // TODO: password: Test123
         // TODO: so please use those to test the login.
+        // done
     }
 
     public void LoginCheck(View v) {
 
         String emailText = emailInput.getText().toString().trim();
         String passwordText = passwordInput.getText().toString().trim();
-        ValidateLogin(v, emailText, passwordText);
+        ValidateLogin(emailText, passwordText);
     }
 
-    protected void ValidateLogin(View v, String emailText, String passwordText) {
+    protected void ValidateLogin(String emailText, String passwordText) {
 
         String URL = "http://dev.rapptrlabs.com/Tests/scripts/login.php";
         // using OkHttp

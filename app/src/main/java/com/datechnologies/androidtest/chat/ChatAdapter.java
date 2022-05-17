@@ -1,12 +1,12 @@
 package com.datechnologies.androidtest.chat;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import com.datechnologies.androidtest.R;
 import com.datechnologies.androidtest.api.ChatLogMessageModel;
 import com.squareup.picasso.Picasso;
@@ -75,9 +75,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     //==============================================================================================
 
     public static class ChatViewHolder extends RecyclerView.ViewHolder {
-        ImageView avatarImageView;
-        TextView messageTextView;
-        TextView messengerName;
+        final ImageView avatarImageView;
+        final TextView messageTextView;
+        final TextView messengerName;
 
         public ChatViewHolder(View view) {
             super(view);

@@ -13,10 +13,10 @@
         android:layout_marginLeft="@dimen/main_margin"
         android:layout_marginRight="@dimen/main_margin"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
 
         <Button
-            android:id="@+id/chat_button"
             android:layout_width="match_parent"
             android:layout_height="@dimen/button_height"
             android:layout_marginTop="@dimen/activity_button_top_margin"
@@ -25,10 +25,10 @@
             android:drawableStart="@drawable/ic_chat"
             android:onClick="onChatClicked"
             android:text="@string/chat_button"
-            android:theme="@style/main_button_style" />
+            android:theme="@style/main_button_style"
+            tools:ignore="UsingOnClickInXml" />
 
         <Button
-            android:id="@+id/log_in_button"
             android:layout_width="match_parent"
             android:layout_height="@dimen/button_height"
             android:layout_marginTop="@dimen/button_margin_between"
@@ -37,10 +37,10 @@
             android:drawableStart="@drawable/ic_lock"
             android:onClick="onLoginClicked"
             android:text="@string/login_button"
-            android:theme="@style/main_button_style" />
+            android:theme="@style/main_button_style"
+            tools:ignore="UsingOnClickInXml" />
 
         <Button
-            android:id="@+id/animation_button"
             android:layout_width="match_parent"
             android:layout_height="@dimen/button_height"
             android:layout_marginTop="@dimen/button_margin_between"
@@ -49,7 +49,8 @@
             android:drawableStart="@drawable/ic_animation"
             android:onClick="onAnimationClicked"
             android:text="@string/animation_button"
-            android:theme="@style/main_button_style" />
+            android:theme="@style/main_button_style"
+            tools:ignore="UsingOnClickInXml" />
 
     </LinearLayout>
 
